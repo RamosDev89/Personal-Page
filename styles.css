@@ -426,6 +426,7 @@
     .skills-inner {
       max-width: 1200px;
       margin: 0 auto;
+      text-align: center; /* centraliza título dentro de skills */
     }
 
     .skills-grid {
