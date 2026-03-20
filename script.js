@@ -61,7 +61,7 @@ function applyTilt(card) {
   });
 }
 
-// GitHub API
+// Language colors
 function getLangColor(lang) {
   const colors = {
     JavaScript: "#f1e05a",
@@ -71,10 +71,22 @@ function getLangColor(lang) {
     Python: "#3572A5",
     Java: "#b07219",
     React: "#61dafb",
+    react: "#61dafb",
+    nodejs: "#68a063",
+    express: "#68a063",
+    mysql: "#00758f",
+    openweathermap: "#eb6e4b",
+    "react-native": "#61dafb",
+    typescript: "#3178c6",
+    javascript: "#f1e05a",
+    html: "#e34c26",
+    css: "#563d7c",
+    python: "#3572A5",
   };
-  return colors[lang] || "#888";
+  return colors[lang] || "#00e5ff";
 }
 
+// GitHub API
 async function loadProjects() {
   const grid = document.getElementById("projects-grid");
   if (!grid) return;
@@ -87,16 +99,31 @@ async function loadProjects() {
 
     const filtered = repos.filter((repo) => repo.name !== "Personal-Page");
 
-    filtered.forEach((repo) => {
-      const langColor = getLangColor(repo.language);
+    for (const repo of filtered) {
+      const langResponse = await fetch(repo.languages_url);
+      const languages = await langResponse.json();
+      const langNames = Object.keys(languages);
+
+      const topicsResponse = await fetch(
+        `https://api.github.com/repos/RamosDev89/${repo.name}/topics`,
+        { headers: { Accept: "application/vnd.github.mercy-preview+json" } }
+      );
+      const topicsData = await topicsResponse.json();
+      const topics = topicsData.names || [];
+
+      const tagsToShow = topics.length > 0 ? topics : langNames;
 
       const card = document.createElement("article");
       card.className = "project-card reveal";
       card.innerHTML = `
         <h3 class="project-title">${repo.name}</h3>
-        <div style="display:flex; align-items:center; gap:8px; margin-bottom:16px;">
-          <span style="width:12px; height:12px; border-radius:50%; background:${langColor}; display:inline-block; flex-shrink:0;"></span>
-          <span class="project-desc" style="margin:0; font-size:13px;">${repo.language || "N/A"}</span>
+        <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin-bottom:16px;">
+          ${tagsToShow.map(tag => `
+            <span style="display:flex; align-items:center; gap:4px; font-size:12px; color:rgba(245,245,240,0.75);">
+              <span style="width:10px; height:10px; border-radius:50%; background:${getLangColor(tag)}; display:inline-block; flex-shrink:0;"></span>
+              ${tag}
+            </span>
+          `).join("")}
         </div>
         <a class="project-link btn btn-primary"
           href="${repo.html_url}"
@@ -107,13 +134,9 @@ async function loadProjects() {
       `;
 
       grid.appendChild(card);
-
-      // aplica scroll reveal no card recém criado
       observer.observe(card);
-
-      // aplica tilt no card recém criado
       applyTilt(card);
-    });
+    }
 
   } catch (error) {
     grid.innerHTML = '<p style="color:#888">Failed to load projects.</p>';
