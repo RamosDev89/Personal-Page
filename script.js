@@ -125,12 +125,22 @@ async function loadProjects() {
             </span>
           `).join("")}
         </div>
-        <a class="project-link btn btn-primary"
-          href="${repo.html_url}"
-          target="_blank"
-          rel="noopener noreferrer">
-          Ver projeto
-        </a>
+        <div style="display:flex; justify-content:center; gap: 10px;">
+          <a class="project-link btn btn-primary"
+            href="${repo.html_url}"
+            target="_blank"
+            rel="noopener noreferrer">
+            Repositório
+          </a>
+          ${(repo.homepage && repo.homepage.trim() !== "") || (repo.has_pages && repo.name !== "weather-app") ? `
+          <a class="project-link btn btn-ghost"
+            href="${repo.homepage || `https://${repo.owner.login}.github.io/${repo.name}/`}"
+            target="_blank"
+            rel="noopener noreferrer">
+            Visitar site
+          </a>
+          ` : ""}
+        </div>
       `;
 
       grid.appendChild(card);
