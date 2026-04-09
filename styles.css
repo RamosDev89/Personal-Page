@@ -23,7 +23,17 @@ body {
   color: var(--white);
   font-family: 'Cabinet Grotesk', sans-serif;
   overflow-x: hidden;
-  cursor: none;
+}
+
+/* Hide native cursor only on devices with hover capability */
+@media (hover: hover) and (pointer: fine) {
+  body, 
+  .btn, 
+  .project-link, 
+  .contact-link,
+  a {
+    cursor: none;
+  }
 }
 
 /* CUSTOM CURSOR */
@@ -204,7 +214,6 @@ nav {
   text-decoration: none;
   border-radius: 2px;
   transition: all 0.25s;
-  cursor: none;
 }
 
 .btn-primary {
@@ -895,6 +904,10 @@ body::after {
 
   nav { padding: 16px 24px; }
   .nav-logo { font-size: 12px; }
+
+  /* HIDE CUSTOM CURSOR ON MOBILE/TOUCH */
+  .cursor, .cursor-follower { display: none !important; }
+  body, .btn, .project-link, .contact-link, a { cursor: auto !important; }
 
   .nav-links {
     display: none;
