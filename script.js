@@ -107,12 +107,14 @@ async function loadProjects() {
           `).join("")}
         </div>
         <div style="display:flex; justify-content:center; gap: 10px;">
+          ${repo.name !== "techjobs-br-" ? `
           <a class="project-link btn btn-primary"
             href="${repo.html_url}"
             target="_blank"
             rel="noopener noreferrer">
             Repositório
           </a>
+          ` : ""}
           ${(repo.homepage && repo.homepage.trim() !== "") || (repo.has_pages && repo.name !== "weather-app") ? `
           <a class="project-link btn btn-ghost"
             href="${repo.homepage || `https://${repo.owner.login}.github.io/${repo.name}/`}"
