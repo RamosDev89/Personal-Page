@@ -13,33 +13,6 @@ navLinks.querySelectorAll("a").forEach((link) => {
   });
 });
 
-// Custom cursor
-const cursor = document.getElementById("cursor");
-const follower = document.getElementById("cursorFollower");
-let mx = 0, my = 0, fx = 0, fy = 0;
-let isMobile = window.innerWidth <= 768 || window.matchMedia("(hover: none)").matches;
-
-window.addEventListener("resize", () => {
-  isMobile = window.innerWidth <= 768 || window.matchMedia("(hover: none)").matches;
-});
-
-document.addEventListener("mousemove", (e) => {
-  if (isMobile) return;
-  mx = e.clientX;
-  my = e.clientY;
-  cursor.style.transform = `translate(${mx - 5}px, ${my - 5}px)`;
-});
-
-function animateFollower() {
-  if (!isMobile) {
-    fx += (mx - fx - 18) * 0.12;
-    fy += (my - fy - 18) * 0.12;
-    follower.style.transform = `translate(${fx}px, ${fy}px)`;
-  }
-  requestAnimationFrame(animateFollower);
-}
-animateFollower();
-
 // Scroll reveal
 const reveals = document.querySelectorAll(".reveal");
 const observer = new IntersectionObserver(
