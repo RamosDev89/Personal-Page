@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { featuredProject, personalInfo } from '@/data/portfolio'
+import { featuredProject, personalInfo, staticProjects } from '@/data/portfolio'
 
 interface GitHubRepo {
   id: number
@@ -112,6 +112,7 @@ export function Projects() {
 
         const sorted = [
           ...withLangs.filter((p) => p.isFeatured),
+          ...staticProjects,
           ...withLangs.filter((p) => !p.isFeatured),
         ]
 
@@ -197,14 +198,16 @@ export function Projects() {
                   )}
 
                   <div className="flex gap-3 pt-1">
-                    <a
-                      href={project.html_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-4 py-2 rounded-lg text-xs font-semibold bg-accent text-[#080808] hover:bg-accent2 transition-colors"
-                    >
-                      Repositório
-                    </a>
+                    {project.html_url && (
+                      <a
+                        href={project.html_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-lg text-xs font-semibold bg-accent text-[#080808] hover:bg-accent2 transition-colors"
+                      >
+                        Repositório
+                      </a>
+                    )}
                     {project.homepage && project.homepage.trim() !== '' && (
                       <a
                         href={project.homepage}

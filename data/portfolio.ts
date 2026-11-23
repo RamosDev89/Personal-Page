@@ -35,6 +35,29 @@ export const aboutStats = [
   { value: '∞', label: 'vontade de\naprender' },
 ]
 
+export const staticProjects: Array<{
+  id: number
+  name: string
+  description: string
+  html_url: string
+  homepage: string | null
+  languages: string[]
+  isFeatured: boolean
+  badge?: string
+}> = [
+  {
+    id: -1,
+    name: 'Apicus 3D',
+    description:
+      'Visualizador de tomografia odontológica (CBCT) para Mac, Windows e Linux: cortes MPR, panorâmica, 3D na GPU, canal mandibular e medições. Licenças e versão teste online com Supabase.',
+    html_url: '',
+    homepage: 'https://apicus3d.com',
+    languages: ['Rust', 'WGSL', 'TypeScript'],
+    isFeatured: false,
+    badge: 'Em produção',
+  },
+]
+
 export const experience = [
   {
     role: 'Desenvolvedor Full Stack',
