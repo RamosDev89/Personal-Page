@@ -46,6 +46,8 @@ function applyTilt(card) {
 function getLangColor(lang) {
   const colors = {
     JavaScript: "#f1e05a",
+    Rust: "#dea584",
+    WGSL: "#1a5e9a",
     TypeScript: "#3178c6",
     HTML: "#e34c26",
     CSS: "#563d7c",
@@ -78,9 +80,15 @@ async function loadProjects() {
     );
     const repos = await response.json();
 
-    const filtered = repos.filter((repo) => repo.name !== "Personal-Page");
+    // Private repos (not returned by the GitHub API) shown as fixed cards.
+    const staticProjects = [
+      { name: "Apicus 3D", html_url: "", homepage: "https://apicus3d.com", tags: ["Rust", "WGSL", "TypeScript"] },
+    ];
+    const filtered = [...staticProjects, ...repos.filter((repo) => repo.name !== "Personal-Page")];
 
     for (const repo of filtered) {
+      let tagsToShow = repo.tags;
+      if (!tagsToShow) {
       const langResponse = await fetch(repo.languages_url);
       const languages = await langResponse.json();
       const langNames = Object.keys(languages);
@@ -92,7 +100,8 @@ async function loadProjects() {
       const topicsData = await topicsResponse.json();
       const topics = topicsData.names || [];
 
-      const tagsToShow = topics.length > 0 ? topics : langNames;
+      tagsToShow = topics.length > 0 ? topics : langNames;
+      }
 
       const card = document.createElement("article");
       card.className = "project-card reveal";
@@ -107,7 +116,7 @@ async function loadProjects() {
           `).join("")}
         </div>
         <div style="display:flex; justify-content:center; gap: 10px;">
-          ${repo.name !== "techjobs-br-" ? `
+          ${repo.html_url && repo.name !== "techjobs-br-" ? `
           <a class="project-link btn btn-primary"
             href="${repo.html_url}"
             target="_blank"
